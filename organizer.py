@@ -72,6 +72,5 @@ def checkTime():
 
 if __name__ == "__main__":
     while True:
-        renamer()
-#        if checkTime():
-#            renamer()
+        if checkTime():
+            renamer()
