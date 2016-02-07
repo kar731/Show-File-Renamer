@@ -1,8 +1,6 @@
 import os
-import time
 
 from guessit import guessit
-from datetime import datetime
 
 finished_files = []
 
@@ -64,13 +62,5 @@ def renamer():
             os.rename(file, titleInformation(file))
             finished_files.append(titleInformation(file))
 
-def checkTime():
-    now = datetime.now().time()
-    if now.hour == 24:
-        return True
-    return False
-
 if __name__ == "__main__":
-    while True:
-        if checkTime():
-            renamer()
+    renamer()
