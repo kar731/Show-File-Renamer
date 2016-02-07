@@ -6,7 +6,8 @@ from datetime import datetime
 
 finished_files = []
 
-def titleInformation(filename):
+
+def titleInformation(filename, length):
     """Finds the needed information to rename the show.
 
     Takes the filename and formats it with information from guessit.
@@ -14,7 +15,7 @@ def titleInformation(filename):
 
     Args:
         filename: The name of the file for it to be decoded and renamed.
-
+        length: length of the filename
     Returns:
         The new filename format.
 
@@ -27,12 +28,10 @@ def titleInformation(filename):
     season = name['season']
     episode = name['episode']
 
-    file_ending = filename[len(filename) - 4:len(filename)]
+    file_ending = filename[length - 4:length]
 
-    if int(season) < 10:
-        season = "0{}".format(season)
-    if int(episode) < 10:
-        episode = "0{}".format(episode)
+    season = "{0:0>2}".format(name['season'])
+    episode = "{0:0>2}".format(name['episode'])
 
     filename = "{0} S{1}E{2}{3}".format(title, season, episode, file_ending)
     return filename
@@ -59,17 +58,18 @@ def renamer():
     files = os.listdir(".")
 
     for file in files:
-        if file[len(file) - 4:len(file)] in filetypes and file not in finished_files:
+        length = len(file)
+        if file[length - 4:length] in filetypes and file not in finished_files:
             print(file)
-            os.rename(file, titleInformation(file))
-            finished_files.append(titleInformation(file))
-
+            os.rename(file, titleInformation(file, length))
+            finished_files.append(titleInformation(file, length))
+            
 def checkTime():
     now = datetime.now().time()
     if now.hour == 24:
         return True
     return False
-
+    
 if __name__ == "__main__":
     while True:
         if checkTime():
