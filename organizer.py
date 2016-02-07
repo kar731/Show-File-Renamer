@@ -63,7 +63,7 @@ def renamer():
             print(file)
             os.rename(file, titleInformation(file, length))
             finished_files.append(titleInformation(file, length))
-            
+   
 def checkTime():
     now = datetime.now().time()
     if now.hour == 24:
@@ -74,3 +74,5 @@ if __name__ == "__main__":
     while True:
         if checkTime():
             renamer()
+        else:
+            time.sleep(420)
