@@ -1,5 +1,6 @@
 import os
 import time
+import json
 
 from guessit import guessit
 from datetime import datetime
@@ -7,7 +8,7 @@ from datetime import datetime
 finished_files = []
 
 
-def titleInformation(filename, length):
+def titleInformation(filename, extension):
     """Finds the needed information to rename the show.
 
     Takes the filename and formats it with information from guessit.
@@ -28,12 +29,10 @@ def titleInformation(filename, length):
     season = name['season']
     episode = name['episode']
 
-    file_ending = filename[length - 4:length]
-
     season = "{0:0>2}".format(name['season'])
     episode = "{0:0>2}".format(name['episode'])
 
-    filename = "{0} S{1}E{2}{3}".format(title, season, episode, file_ending)
+    filename = "{0} S{1}E{2}{3}".format(title, season, episode, extension)
     return filename
 
 
@@ -53,23 +52,30 @@ def renamer():
         None
     """
 
-    global finished_files
     filetypes = [".mp4", ".avi", ".mkv"]
     files = os.listdir(".")
 
-    for file in files:
-        length = len(file)
-        if file[length - 4:length] in filetypes and file not in finished_files:
-            print(file)
-            os.rename(file, titleInformation(file, length))
-            finished_files.append(titleInformation(file, length))
-   
+    for show in files:
+        title, extension = os.path.splitext(show)
+        finished_files = json.load(open("files.json"))
+
+        if extension in filetypes and show not in finished_files["files"]:
+            print(title)
+
+            os.rename(show, titleInformation(show, extension))
+            finished_files["files"].append(titleInformation(show, extension))
+
+            json.dump(finished_files, open("files.json", "w"),
+                      indent=4, sort_keys=True)
+
+
 def checkTime():
     now = datetime.now().time()
     if now.hour == 24:
         return True
     return False
-    
+
+
 if __name__ == "__main__":
     while True:
         if checkTime():
