@@ -1,4 +1,6 @@
-# Show-File-Renamer
+# Show-File-Renamer 
+[![Build Status](https://travis-ci.org/kar731/Show-File-Renamer.svg?branch=master)](https://travis-ci.org/kar731/Show-File-Renamer)
+
 Automatically renames your shows to a specific format at 12am!
 
 Requirements:  
